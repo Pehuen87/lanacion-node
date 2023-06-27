@@ -16,6 +16,8 @@ function getProductById(req: Request, res: Response, next: NextFunction) {
 }
 
 function updateProduct(req: Request, res: Response, next: NextFunction) {
+
+    //if(req.params.id)
     res.status(400).json({ message: 'uopdate BY ID' + req.params.id });
 
 
