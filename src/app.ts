@@ -1,30 +1,31 @@
-import express, { NextFunction, Request, Response } from 'express';
-import { createConnection } from 'typeorm';
+import express, { Request, Response } from 'express';
+import { myDataSource } from './datasourse';
 import inquirer from 'inquirer';
 import productRoutes from './routes/productRoutes';
 
 const app = express();
 app.use(express.json());
 
-// Conexión a la base de datos
-/*TODOcreateConnection()
+// Conexión a la base de 
+myDataSource
+    .initialize()
     .then(() => {
         console.log('Conexión a la base de datos establecida');
     })
     .catch((error) => {
         console.log('Error al conectar a la base de datos:', error);
     });
-*/
+
 // Rutas de productos
 app.use('/products', productRoutes);
 
 // Manejo de errores global
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+app.use((err: Error, req: Request, res: Response) => {
     console.error(err.stack);
     res.status(500).json({ message: 'Ocurrió un error en el servidor' });
 });
 
-const startServer = (port: Number) => {
+const startServer = (port: number) => {
     app.listen(port, () => {
         console.log(`Servidor escuchando en el puerto ${port}`);
     });

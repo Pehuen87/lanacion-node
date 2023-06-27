@@ -1,9 +1,9 @@
 export interface Product {
     id: number;
     sku: number;
-    categoryId: number;
+    categoryName: string;
     productName: string;
     description: string;
     price: number;
-    stateId: number;
+    state: boolean;
 }
