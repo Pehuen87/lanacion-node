@@ -51,17 +51,17 @@ const configDatabase = () => {
 inquirer
     .prompt([
         {
+            type: 'list',
+            name: 'action',
+            message: 'Choose an action:',
+            choices: ['Start Server', 'Create Mock Data', 'Config Database Connection'],
+        },
+        {
             type: 'input',
             name: 'port',
             message: 'Enter the port number:',
             default: 3000, // Default port number
             validate: validatePort
-        },
-        {
-            type: 'list',
-            name: 'action',
-            message: 'Choose an action:',
-            choices: ['Start Server', 'Create Mock Data', 'Config Database Connection'],
         },
     ])
     .then((answers) => {
