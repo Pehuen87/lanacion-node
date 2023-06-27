@@ -61,14 +61,14 @@ inquirer
             type: 'list',
             name: 'action',
             message: 'Choose an action:',
-            choices: ['Start Server', 'Create Mock Database', 'Config Database Connection'],
+            choices: ['Start Server', 'Create Mock Data', 'Config Database Connection'],
         },
     ])
     .then((answers) => {
         const { port, action } = answers;
         if (action === 'Start Server') {
             startServer(port);
-        } else if (action === 'Create Mock Database') {
+        } else if (action === 'Create Mock Data') {
             createMockData();
         } else if (action === 'Config Database Connection') {
             configDatabase();
