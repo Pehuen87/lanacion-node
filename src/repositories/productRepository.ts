@@ -1,5 +1,5 @@
 import { Product } from "../entities/Product";
-import { myDataSource } from "../datasourse";
+import { myDataSource } from "../datasource";
 
 
 class ProductRepository {

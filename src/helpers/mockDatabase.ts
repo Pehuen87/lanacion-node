@@ -1,4 +1,4 @@
-import { myDataSource } from "../datasourse";
+import { myDataSource } from "../datasource";
 import { Category } from "../entities/Category";
 import { Product } from "../entities/Product";
 import { Status } from "../entities/Status";

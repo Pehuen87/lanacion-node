@@ -1,6 +1,4 @@
 import { Request, Response } from 'express';
-import { Product } from '../entities/Product';
-import { myDataSource } from '../datasourse';
 import productRepository from '../repositories/productRepository';
 
 
