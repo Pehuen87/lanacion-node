@@ -6,11 +6,11 @@ import {
     updateProduct,
     deleteProductById
 } from '../controllers/productController';
-import { validateProduct, validateProductId } from '../middlewares/validator';
+import { validateProduct, validateProductId, validatePagination } from '../middlewares/validator';
 
 const router = express.Router();
 
-router.get('/', getAllProducts);
+router.get('/', validatePagination, getAllProducts);
 router.post('/', validateProduct, createProduct);
 router.get('/:id', validateProductId, getProductById);
 router.put('/:id', validateProductId, validateProduct, updateProduct);

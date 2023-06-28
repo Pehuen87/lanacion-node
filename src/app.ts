@@ -1,6 +1,6 @@
 import express, { Request, Response } from 'express';
 import { myDataSource } from './datasourse';
-import inquirer from 'inquirer';
+import inquirer, { Answers } from 'inquirer';
 import productRoutes from './routes/productRoutes';
 import { validatePort } from './helpers/validator';
 import { createMockData } from './helpers/mockDatabase';
@@ -13,30 +13,35 @@ app.use(express.json());
 myDataSource
     .initialize()
     .then(() => {
-        console.log('Conexión a la base de datos establecida');
+        console.log('Database Connected');
     })
     .catch((error) => {
-        console.log('Error al conectar a la base de datos:', error);
+        console.log('Database Connection Error: ', error);
     });
 
 // Rutas de productos
 app.use('/products', productRoutes);
 
 // Manejo de errores global
-app.use((err: Error, req: Request, res: Response) => {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Ocurrió un error en el servidor' });
+app.use((req: Request, res: Response) => {
+    try {
+        return res.status(403).json({ message: 'Bad Request' });
+    } catch {
+        console.log("A fatal error ocurred")
+    }
 });
 
 
 
 const startServer = (port: number) => {
+
+
     try {
-      app.listen(port, () => {
-        console.log(`Servidor escuchando en el puerto ${port}`);
-      });
+        app.listen(port, () => {
+            console.log(`Server listening on port ${port}`);
+        });
     } catch (error) {
-      console.error(`Error al intentar iniciar el servidor en el puerto ${port}:`, error);
+        console.error('Server Error: ', error);
     }
 };
 
@@ -48,33 +53,49 @@ const configDatabase = () => {
 };
 
 
-inquirer
-    .prompt([
+
+const loop = () => {
+    let continueLoop = true;
+
+    const promptChoices = ['Start Server', 'Create Mock Data', 'Exit'];
+
+    const promptQuestion = [
         {
             type: 'list',
             name: 'action',
             message: 'Choose an action:',
-            choices: ['Start Server', 'Create Mock Data', 'Config Database Connection'],
+            choices: promptChoices,
         },
         {
             type: 'input',
             name: 'port',
             message: 'Enter the port number:',
             default: 3000, // Default port number
-            validate: validatePort
+            validate: validatePort,
+            when: (answers: Answers) => answers.action === 'Start Server',
         },
-    ])
-    .then((answers) => {
-        const { port, action } = answers;
-        if (action === 'Start Server') {
-            startServer(port);
-        } else if (action === 'Create Mock Data') {
-            createMockData();
-        } else if (action === 'Config Database Connection') {
-            configDatabase();
-        }
-    })
-    .catch((error) => {
-        console.error('An error occurred:', error);
-    });
+    ];
+
+    while (continueLoop) {
+        inquirer
+            .prompt(promptQuestion)
+            .then((answers) => {
+                const { port, action } = answers;
+                if (action === 'Start Server') {
+                    startServer(port);
+                } else if (action === 'Create Mock Data') {
+                    createMockData();
+                } else if (action === 'Exit') {
+                    continueLoop = false;
+                }
+            })
+            .catch((error) => {
+                console.error('An error occurred:', error);
+            });
+    }
+};
+
+loop();
+
+
 

@@ -1,66 +1,66 @@
 import { Request, Response } from 'express';
 import { Product } from '../entities/Product';
 import { myDataSource } from '../datasourse';
+import productRepository from '../repositories/productRepository';
 
 
 async function getAllProducts(req: Request, res: Response) {
-    
-const pageNumber = parseInt(req.query.pageNumber as string, 10); // Número de página deseado
-const itemsPerPage = parseInt(req.query.itemsPerPage as string, 10); // Cantidad de elementos por página
 
+  const pageNumber = parseInt(req.query.pageNumber as string, 10); // Número de página deseado
+  const itemsPerPage = parseInt(req.query.itemsPerPage as string, 10); // Cantidad de elementos por página
 
-if (isNaN(pageNumber) || pageNumber <= 0) {
-  // Handle the error when the pageNumber is not a valid number or less than or equal to 0
-  return res.status(400).json({ error: 'Invalid pageNumber' });
-}
+  try {
+    const products = await productRepository.getAllProducts(pageNumber, itemsPerPage);
 
+    return res.status(200).json(products);
+  } catch (error) {
+    return res.status(500).json({ message: "An error ocurred" });
+  }
 
-if (isNaN(itemsPerPage) || itemsPerPage <= 0) {
-  // Handle the error when the itemsPerPage is not a valid number or less than or equal to 0
-  return res.status(400).json({ error: 'Invalid itemsPerPage' });
-}
-
-  
-
-const products = await myDataSource.getRepository(Product)
-  .createQueryBuilder('product')
-  .leftJoinAndSelect('product.category', 'category')
-  .leftJoinAndSelect('product.status', 'status')
-  .skip((pageNumber - 1) * itemsPerPage)
-  .take(itemsPerPage)
-  .getMany();
-
-    res.status(200).json(products)
 }
 
 async function createProduct(req: Request, res: Response) {
 
-    const product = await myDataSource.getRepository(Product)
-                            .createQueryBuilder('product')
-                            .leftJoinAndSelect('product.category', 'category')
-                            .leftJoinAndSelect('product.status', 'status')
-                            .getMany();
-
-    res.status(200).json(product)
+  const product = await myDataSource.getRepository(Product)
+    .createQueryBuilder('product')
+    .leftJoinAndSelect('product.category', 'category')
+    .leftJoinAndSelect('product.status', 'status')
+    .getMany();
+  return res.status(200).json(product)
 }
 
-function getProductById(req: Request, res: Response) {
-    res.status(400).json({ message: 'GET BY ID' + req.params.id });
-
+async function getProductById(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id as string, 10);
+    const product = await productRepository.getProductById(id);
+    if (!product) return res.status(404).json({ message: 'No product with id ' + id })
+    return res.json(product);
+  } catch (error) {
+    return res.status(500).json({ message: "An error ocurred" });
+  }
 }
 
-function updateProduct(req: Request, res: Response) {
-
-    //if(req.params.id)
-    res.status(400).json({ message: 'uopdate BY ID' + req.params.id });
-
-
+async function updateProduct(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id as string, 10);
+    const product = await productRepository.updateProduct(id, req.body);
+    if (!product) return res.status(404).json({ message: 'No product with id ' + id })
+    return res.json(product);
+  } catch (error) {
+    return res.status(500).json({ message: "An error ocurred" });
+  }
 }
 
 
-function deleteProductById(req: Request, res: Response) {
-
-    res.status(400).json({ message: 'delete BY ID' + req.params.id });
+async function deleteProductById(req: Request, res: Response) {
+  try {
+    const id = parseInt(req.params.id as string, 10);
+    const deleted = await productRepository.deleteProductById(id);
+    if (!deleted) return res.status(404).json({ message: 'No product with id ' + id })
+    return res.status(204).json({ message: "Deleted product with id: " + id });
+  } catch (error) {
+    return res.status(500).json({ message: "An error ocurred" });
+  }
 
 }
 
