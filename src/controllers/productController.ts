@@ -20,13 +20,13 @@ async function getAllProducts(req: Request, res: Response) {
 }
 
 async function createProduct(req: Request, res: Response) {
-
-  const product = await myDataSource.getRepository(Product)
-    .createQueryBuilder('product')
-    .leftJoinAndSelect('product.category', 'category')
-    .leftJoinAndSelect('product.status', 'status')
-    .getMany();
-  return res.status(200).json(product)
+  try {
+    const product = await productRepository.createProduct(req.body);
+    if (!product) return res.status(402).json({ message: 'No product created' })
+    return res.status(202).json(product);
+  } catch (error) {
+    return res.status(500).json({ message: "An error ocurred" });
+  }
 }
 
 async function getProductById(req: Request, res: Response) {

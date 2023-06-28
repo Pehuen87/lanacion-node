@@ -13,4 +13,8 @@ function loggerStatus(any: unknown){
     console.log(`\n${colors.rose}>> Status: ${colors.reset}${any}`);
 }
 
-export {loggerStatus}
+function loggerError(any: unknown){
+    console.error(`\n${colors.red}!! Error: ${colors.reset}${any}`);
+}
+
+export {loggerStatus, loggerError}

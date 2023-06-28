@@ -4,10 +4,10 @@ import { myDataSource } from './datasourse';
 import productRoutes from './routes/productRoutes';
 import { createMockData } from './helpers/mockDatabase';
 import { exit } from 'process';
-import { loggerStatus } from './helpers/logger';
+import { loggerError, loggerStatus } from './helpers/logger';
 import {  Prompted } from './helpers/inquirerPrompt';
 
-console.log(process.env)
+
 const app = express();
 app.use(express.json());
 
@@ -20,7 +20,7 @@ app.use((req: Request, res: Response) => {
     try {
         return res.status(403).json({ message: 'Bad Request' });
     } catch {
-        console.log("A fatal error ocurred")
+        loggerError('Database error');
     }
 });
 
@@ -32,7 +32,7 @@ const startServer = () => {
             loggerStatus(`Server listening on port ${port}`);
         });
     } catch (error) {
-        console.error('\nServer Error: ', error);
+        loggerError('Server Error: '  + error);
     }
 };
 
@@ -44,13 +44,11 @@ const connectToDatabase = () => {
         loggerStatus('Database Connected');
     })
     .catch((error) => {
-        console.log('\nDatabase Connection Error: ', error);
+        loggerError('Database Connection Error: ' + error);
     });
 }
 
-const stopServer = () => {
-    console.log("connected")
-}
+
 
 const inq : Prompted = new Prompted();
 inq.inquirerChoices = [
@@ -65,9 +63,9 @@ inq.inquirerChoices = [
         disabled: false,
     },
     {
-        choice: 'Stop Server',
-        action: stopServer,
-        disabled: true,
+        choice: 'Create Mock Data',
+        action: createMockData,
+        disabled: false,
     },
     {
         choice: 'Exit',

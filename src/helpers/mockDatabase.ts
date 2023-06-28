@@ -3,6 +3,7 @@ import { Category } from "../entities/Category";
 import { Product } from "../entities/Product";
 import { Status } from "../entities/Status";
 import { faker } from '@faker-js/faker'
+import { loggerError, loggerStatus } from "./logger";
 
 const categories: Category[] = [];
 const status: Status[] = [];
@@ -15,11 +16,11 @@ function createCategory() {
   return myDataSource.getRepository(Category)
     .save(newCategory)
     .then((savedCategory) => {
-      console.log('Category created:', savedCategory);
+      loggerStatus('Category created:' + savedCategory.id);
       categories.push(savedCategory);
     })
     .catch((error) => {
-      console.error('Error creating Category:', error);
+      loggerError('Error creating Category: '+ error);
     });
 }
 
@@ -39,11 +40,11 @@ function createStatus(stat: boolean) {
   return myDataSource.getRepository(Status)
     .save(newStatus)
     .then((savedStatus) => {
-      console.log('Status created:', savedStatus);
+      loggerStatus('Status created: '+ savedStatus.id);
       status.push(savedStatus);
     })
     .catch((error) => {
-      console.error('Error creating Status:', error);
+      loggerError('Error creating Status: ' + error);
     });
 }
 
@@ -59,10 +60,10 @@ function createProduct() {
   return myDataSource.getRepository(Product)
     .save(newProduct)
     .then((savedProduct) => {
-      console.log('Product created:', savedProduct);
+      loggerStatus('Product created:' + savedProduct.id);
     })
     .catch((error) => {
-      console.error('Error creating product:', error);
+      loggerError('Error creating product:' + error);
     });
 }
 
@@ -75,10 +76,12 @@ function createProducts(value: number) {
 }
 
 async function createMockData() {
-  await createCategories(2);
-  await createStatus(true);
-  await createStatus(false);
-  await createProducts(100);
+  if(myDataSource.isInitialized){
+    await createCategories(2);
+    await createStatus(true);
+    await createStatus(false);
+    await createProducts(100);
+  }else loggerError('Database not connected');
 }
 
 export { createMockData };

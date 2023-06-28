@@ -66,6 +66,15 @@ class ProductRepository {
         }
     }
 
+    async createProduct(prod: Product) {
+        try {
+            const product =  await myDataSource.getRepository(Product).save(prod) // Create a product
+            return product;
+        } catch (error) {
+            throw new Error('Error updating Product by ID');
+        }
+    }
+
 }
 
 export default new ProductRepository();
