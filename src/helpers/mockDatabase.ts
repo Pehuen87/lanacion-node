@@ -20,7 +20,7 @@ function createCategory() {
       categories.push(savedCategory);
     })
     .catch((error) => {
-      loggerError('Error creating Category: '+ error);
+      loggerError('Error creating Category: ' + error);
     });
 }
 
@@ -40,7 +40,7 @@ function createStatus(stat: boolean) {
   return myDataSource.getRepository(Status)
     .save(newStatus)
     .then((savedStatus) => {
-      loggerStatus('Status created: '+ savedStatus.id);
+      loggerStatus('Status created: ' + savedStatus.id);
       status.push(savedStatus);
     })
     .catch((error) => {
@@ -76,12 +76,12 @@ function createProducts(value: number) {
 }
 
 async function createMockData() {
-  if(myDataSource.isInitialized){
+  if (myDataSource.isInitialized) {
     await createCategories(2);
     await createStatus(true);
     await createStatus(false);
     await createProducts(100);
-  }else loggerError('Database not connected');
+  } else loggerError('Database not connected');
 }
 
 export { createMockData };

@@ -6,15 +6,15 @@ const colors = {
     blue: '\x1b[34m',
     rose: '\x1b[35m',
     cyan: '\x1b[36m',
-  };
-  
+};
 
-function loggerStatus(any: unknown){
+
+function loggerStatus(any: unknown) {
     console.log(`\n${colors.rose}>> Status: ${colors.reset}${any}`);
 }
 
-function loggerError(any: unknown){
+function loggerError(any: unknown) {
     console.error(`\n${colors.red}!! Error: ${colors.reset}${any}`);
 }
 
-export {loggerStatus, loggerError}
+export { loggerStatus, loggerError }

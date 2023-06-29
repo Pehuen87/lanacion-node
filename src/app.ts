@@ -1,11 +1,15 @@
 import 'dotenv/config';
-import express, { Request, Response } from 'express';
-import { myDataSource } from './datasource';
-import productRoutes from './routes/productRoutes';
-import { createMockData } from './helpers/mockDatabase';
 import { exit } from 'process';
+import express, { Request, Response } from 'express';
+
+import { myDataSource } from './datasource';
+
+import { createMockData } from './helpers/mockDatabase';
 import { loggerError, loggerStatus } from './helpers/logger';
 import { Prompted } from './helpers/inquirerPrompt';
+
+import productRoutes from './routes/productRoutes';
+
 
 const app = express();
 app.use(express.json());
@@ -51,28 +55,28 @@ const connectToDatabase = () => {
 const inq: Prompted = new Prompted();
 
 // Define the available choices for the prompt
-inq.inquirerChoices = [
+inq.choices = [
   {
-    choice: 'Start Server',
+    label: 'Start Server',
     action: startServer,
     disabled: false,
   },
   {
-    choice: 'Connect to Database',
+    label: 'Connect to Database',
     action: connectToDatabase,
     disabled: false,
   },
   {
-    choice: 'Create Mock Data',
+    label: 'Create Mock Data',
     action: createMockData,
     disabled: false,
   },
   {
-    choice: 'Exit',
+    label: 'Exit',
     action: () => exit(0),
     disabled: false,
   }
 ];
 
 // Start the prompt loop
-inq.inquirerPrompt();
+inq.promptUser();
