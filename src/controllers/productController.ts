@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { boolean } from 'joi';
 import { Product } from '../entities/Product';
 import productRepository from '../repositories/productRepository';
 
