@@ -4,7 +4,6 @@ import { ILike, FindOperator } from "typeorm"
 
 class ProductRepository {
     async getAllProducts(pageNumber: number, itemsPerPage: number, searchCriteria: Partial<Product>) {
-        console.log("REPO ", JSON.stringify(searchCriteria));
         try {
             const query = {
                 relations: ['category', 'status'],
