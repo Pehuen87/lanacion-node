@@ -69,7 +69,7 @@ inq.choices = [
   {
     label: 'Create Mock Data',
     action: createMockData,
-    disabled: false,
+    disabled:  !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development') 
   },
   {
     label: 'Exit',
