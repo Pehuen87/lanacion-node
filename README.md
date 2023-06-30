@@ -14,7 +14,7 @@ Follow these steps to install and run the application:
 1. Clone the repository:
 
 ```
-git clone https://github.com/Pehuen87/lanacion
+git clone https://github.com/Pehuen87/lanacion-node
 ```
 
 2. Navigate to the project directory:
@@ -82,4 +82,4 @@ This project is licensed under the ISC License. See the `LICENSE` file for more 
 
 ## Author
 
-This project was created by Pehuén Assalone. You can find the repository on [GitHub](https://github.com/Pehuen87/lanacion).
+This project was created by Pehuén Assalone. You can find the repository on [GitHub](https://github.com/Pehuen87/lanacion-node).
