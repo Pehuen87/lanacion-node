@@ -20,7 +20,7 @@ git clone https://github.com/Pehuen87/lanacion-node
 2. Navigate to the project directory:
 
 ```
-cd lanacion
+cd lanacion-node
 ```
 
 3. Install the dependencies:
