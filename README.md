@@ -71,7 +71,10 @@ Make sure to replace `:id` with the actual ID of the product when making update 
 
 7. Create mock data (optional):
 
-If you want to create mock data in the database, you can select the "Create Mock Data" option from the prompt when running the application.
+If you want to create mock data in the database, you can select the "Create Mock Data" option from the prompt when running the application in dev mode. 
+```
+npm run start:dev
+```
 
 ## License
 
